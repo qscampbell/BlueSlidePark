@@ -4,12 +4,18 @@ using UnityEngine;
 
 public class WorldMover : MonoBehaviour
 {
+    #region Serialized Fields
 
-    [SerializeField] Transform[] groundObjects;
-    [SerializeField] private GameObject macGO;
+    [SerializeField] private Transform[] groundObjects;
+
+    [SerializeField] private GameObject macGo;
+
     [SerializeField] private float lerpSpeed = 5;
 
+    #endregion
+
     private bool isGrounded;
+
     private Vector3 startingPos;
 
     private void Awake()
@@ -21,7 +27,7 @@ public class WorldMover : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        WaitAndMove(5f, groundObjects);
     }
 
     // Update is called once per frame
@@ -36,5 +42,14 @@ public class WorldMover : MonoBehaviour
     {
         //macGO.GetComponent<MacController>().ResetCharacter();
         transform.position = startingPos;
+    }
+
+    // loop through background
+    private IEnumerator WaitAndMove(float time, Transform[] slideParts)
+    {
+        
+
+
+        yield return new WaitForSeconds(time);
     }
 }

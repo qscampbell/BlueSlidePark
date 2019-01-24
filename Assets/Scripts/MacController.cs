@@ -33,10 +33,8 @@ public class MacController : MonoBehaviour
     {
         gameObject.transform.position = startingPos;
         gameScript.ResetWorld();
-    }
 
-    private void StartMoving()
-    {
+      
         isGrounded = true;
         //gameCon.GetComponent<MacController>().isGrounded = true;
     }
@@ -45,7 +43,7 @@ public class MacController : MonoBehaviour
     {
         if(collision.gameObject.tag == "Floor")
         {
-            StartMoving();
+            isGrounded = true;
         }
     }
 
