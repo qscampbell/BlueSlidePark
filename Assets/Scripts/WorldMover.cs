@@ -8,7 +8,7 @@ public class WorldMover : MonoBehaviour
 
     [SerializeField] private Transform[] groundObjects;
 
-    [SerializeField] private GameObject macGo;
+    [SerializeField] private GameObject macGo, groundGO;
 
     [SerializeField] private float lerpSpeed = 5;
 

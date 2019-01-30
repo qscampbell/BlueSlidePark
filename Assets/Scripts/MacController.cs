@@ -33,7 +33,7 @@ public class MacController : MonoBehaviour
     {
         gameObject.transform.position = startingPos;
         gameScript.ResetWorld();
-
+        rb.velocity = Vector3.zero;
       
         isGrounded = true;
         //gameCon.GetComponent<MacController>().isGrounded = true;
