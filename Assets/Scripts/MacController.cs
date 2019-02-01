@@ -5,7 +5,7 @@ using UnityEngine;
 public class MacController : MonoBehaviour
 {
     [SerializeField] private float speed = 3;
-    [SerializeField] private GameObject gameCon;
+    [SerializeField] private GameObject gameCon, canvasCon;
 
     private WorldMover gameScript;
 
@@ -65,6 +65,8 @@ public class MacController : MonoBehaviour
         if (other.gameObject.tag == "Pickup")
         {
             other.gameObject.SetActive(false);
+            canvasCon.GetComponent<InGameUI>().CallAnimator("ThumbUp");
+
         }
     }
 

@@ -6,28 +6,39 @@ public class WorldMover : MonoBehaviour
 {
     #region Serialized Fields
 
-    [SerializeField] private Transform[] groundObjects;
+    [SerializeField] private List<GameObject> slides = new List<GameObject>();
 
-    [SerializeField] private GameObject macGo, groundGO;
+    [SerializeField] private GameObject macGo, groundGO, canvasGO;
 
     [SerializeField] private float lerpSpeed = 5;
 
-    #endregion
+#endregion
 
     private bool isGrounded;
 
     private Vector3 startingPos;
 
+    // how do i get the player to tell the game con to update the canvas?
+    public void CallCanvas(string words)
+    {
+
+    }
+
     private void Awake()
     {
-        startingPos = transform.position;
+        groundGO = this.transform.GetChild(0).gameObject;
+
+
         isGrounded = false;
+        startingPos = transform.position;
+
+    
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        WaitAndMove(5f, groundObjects);
+        WaitAndMove(5f, slides);
     }
 
     // Update is called once per frame
@@ -45,7 +56,7 @@ public class WorldMover : MonoBehaviour
     }
 
     // loop through background
-    private IEnumerator WaitAndMove(float time, Transform[] slideParts)
+    private IEnumerator WaitAndMove(float time, List<GameObject> slideParts)
     {
         
 
