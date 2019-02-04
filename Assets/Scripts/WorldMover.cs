@@ -8,7 +8,9 @@ public class WorldMover : MonoBehaviour
 
     [SerializeField] private List<GameObject> slides = new List<GameObject>();
 
-    [SerializeField] private GameObject macGo, groundGO, canvasGO;
+    [SerializeField] private GameObject macGo, canvasGO;
+
+    [SerializeField] private Transform groundTrans;
 
     [SerializeField] private float lerpSpeed = 5;
 
@@ -26,8 +28,8 @@ public class WorldMover : MonoBehaviour
 
     private void Awake()
     {
-        groundGO = this.transform.GetChild(0).gameObject;
-
+        groundTrans = this.transform.GetChild(0);
+    
 
         isGrounded = false;
         startingPos = transform.position;
@@ -38,7 +40,7 @@ public class WorldMover : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        WaitAndMove(5f, slides);
+        StartCoroutine(WaitAndMove(5f, slides));
     }
 
     // Update is called once per frame
@@ -58,9 +60,31 @@ public class WorldMover : MonoBehaviour
     // loop through background
     private IEnumerator WaitAndMove(float time, List<GameObject> slideParts)
     {
+        // populate the list of gameobjects
+        if(slideParts.Capacity == 0)
+        {
+            foreach(Transform child in groundTrans)
+            {
+                slideParts.Add(child.gameObject);
+            }
+           // Debug.Log("Slidepart Capacity: " + slideParts.Capacity);
+        }
+        else
+        {
+            //Debug.Log("Exit");
+        }
+
+        slideParts[slideParts.Capacity - 2].transform.position = new Vector3(0f, 0f, 170f);
+        Debug.Log("SlidePart Capacity: " + (slideParts.Capacity - 2));
         
+        slideParts[slideParts.Capacity - 2].transform.SetSiblingIndex(0);
+        Debug.Log("First Child: " + )
+
 
 
         yield return new WaitForSeconds(time);
+
+        //Loop
+        StartCoroutine(WaitAndMove(5f, slideParts));
     }
 }
