@@ -74,12 +74,13 @@ public class WorldMover : MonoBehaviour
             //Debug.Log("Exit");
         }
 
-        slideParts[slideParts.Capacity - 2].transform.position = new Vector3(0f, 0f, 170f);
-        Debug.Log("SlidePart Capacity: " + (slideParts.Capacity - 2));
-        
-        slideParts[slideParts.Capacity - 2].transform.SetSiblingIndex(0);
-        Debug.Log("First Child: " + )
+        slideParts[0].transform.position = new Vector3(0f, 0f, 170f);
+        Debug.Log("SlidePart Capacity: " + (slideParts.Capacity));
 
+        groundTrans.GetChild(0).SetAsLastSibling();
+
+        //slideParts[slideParts.Capacity - 2].transform.SetSiblingIndex(0);
+        Debug.Log("First Child: " + groundTrans.GetChild(0).name);
 
 
         yield return new WaitForSeconds(time);
