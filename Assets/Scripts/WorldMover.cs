@@ -12,11 +12,17 @@ public class WorldMover : MonoBehaviour
 
     [SerializeField] private Transform groundTrans;
 
-    [SerializeField] private float lerpSpeed = 5;
+    [SerializeField] private float lerpSpeed = 5, lengthFlo;
 
-#endregion
+    [SerializeField] int slideChildGOs, lengthInt;
+
+    [SerializeField] Vector3 length;
+
+    #endregion
 
     private bool isGrounded;
+
+    bool repeat;
 
     private Vector3 startingPos;
 
@@ -29,26 +35,29 @@ public class WorldMover : MonoBehaviour
     private void Awake()
     {
         groundTrans = this.transform.GetChild(0);
-    
 
+        repeat = true;
         isGrounded = false;
         startingPos = transform.position;
+        slideChildGOs = groundTrans.childCount;
+        //lengthFlo = groundTrans.GetChild(0).gameObject.GetComponentInChildren<MeshCollider>().bounds.size.y;
+        
+        //Get number of children and length of them
+       
 
-    
     }
 
-    // Start is called before the first frame update
     void Start()
     {
-        StartCoroutine(WaitAndMove(5f, slides));
+        StartCoroutine(WaitAndMove(1f, slideChildGOs));
     }
 
-    // Update is called once per frame
     void Update()
     {
-        //transform.Translate(Vector3.back * 20f * Time.deltaTime);
+
         //https://www.unity3dtips.com/unity-fix-movement-stutter/
-        transform.position = Vector3.Lerp(transform.position, Vector3.back * 300, (Time.deltaTime * lerpSpeed)/100f);
+        //transform.position = Vector3.Lerp(transform.position, Vector3.back * 300, (Time.deltaTime * lerpSpeed)/100f);
+        transform.position += Vector3.back * (lerpSpeed / 10);
     }
 
     public void ResetWorld()
@@ -57,35 +66,52 @@ public class WorldMover : MonoBehaviour
         transform.position = startingPos;
     }
 
+
+    
     // loop through background
-    private IEnumerator WaitAndMove(float time, List<GameObject> slideParts)
+    private IEnumerator WaitAndMove(float time, int slideCount)
     {
-        // populate the list of gameobjects
-        if(slideParts.Capacity == 0)
+        Debug.Log("SlideCount before: " + slideCount);
+
+        // Subtracting 1 because we start counting from 0 but we count the GO starting at 1
+      
+
+        while (repeat)
         {
-            foreach(Transform child in groundTrans)
+            slideCount++;
+            if (slideCount > slideChildGOs - 1)
             {
-                slideParts.Add(child.gameObject);
+                slideCount = 0;
             }
-           // Debug.Log("Slidepart Capacity: " + slideParts.Capacity);
-        }
-        else
-        {
-            //Debug.Log("Exit");
+
+            groundTrans.GetChild(slideCount).transform.position += new Vector3(0, 0, 458f);
+
+            Debug.Log("SlideCount after: " + slideCount);
+           
+
+            //Debug.Log("OnCoroutine: " + (int)Time.time);
+            yield return new WaitForSeconds(2f);
         }
 
-        slideParts[0].transform.position = new Vector3(0f, 0f, 170f);
-        Debug.Log("SlidePart Capacity: " + (slideParts.Capacity));
+        groundTrans.GetChild(slideCount);
 
-        groundTrans.GetChild(0).SetAsLastSibling();
+        //slides[slideCount].transform.position += new Vector3(100f, 0f, 170f);
+
+
+     
+
+
+        //if (slideCount > slides.Capacity - 1)
+          //  slideCount = 0;
+
+        Debug.Log("SlideParts 0: " + slides[0].gameObject.name);
+
+        Debug.Log("SlidePart Capacity: " + (slides.Capacity));
 
         //slideParts[slideParts.Capacity - 2].transform.SetSiblingIndex(0);
         Debug.Log("First Child: " + groundTrans.GetChild(0).name);
 
 
         yield return new WaitForSeconds(time);
-
-        //Loop
-        StartCoroutine(WaitAndMove(5f, slideParts));
     }
 }
