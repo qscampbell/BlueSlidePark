@@ -45,7 +45,7 @@ public class WorldMover : MonoBehaviour
 
     void Start()
     {
-        //StartCoroutine(WaitAndMove(1f, slideChildGOs));
+        StartCoroutine(WaitAndMove(1f, slideChildGOs));
         StartCoroutine(ContinuouslyMove(slideChildGOs));
     }
 
@@ -64,13 +64,18 @@ public class WorldMover : MonoBehaviour
     
     private IEnumerator ContinuouslyMove(int slideCount)
     {
-        while(repeat)
+        //float step = (lerpSpeed / (groundTrans.GetChild(slideCount).transform.position - Vector3.back * 300).magnitude) * Time.fixedDeltaTime;
+        float t = 0;
+
+        while (repeat)
         {
             slideCount++;
             if (slideCount > slideChildGOs - 1)
                 slideCount = 0;
-
-            groundTrans.GetChild(slideCount).transform.position += Vector3.back * 50f * Time.deltaTime;
+            t += Time.deltaTime; // Goes from 0 to 1, incrementing by step each time
+            groundTrans.GetChild(slideCount).transform.position = Vector3.Lerp(groundTrans.GetChild(slideCount).transform.position, Vector3.back * 800, (Time.deltaTime * lerpSpeed) / 100f); // Move objectToMove closer to b
+            //yield return new WaitForFixedUpdate();
+            //groundTrans.GetChild(slideCount).transform.position += Vector3.back * 50f * Time.deltaTime;
             yield return new WaitForSeconds(Time.smoothDeltaTime);
         }
     }
