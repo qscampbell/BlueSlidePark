@@ -20,46 +20,67 @@ public class WorldMover : MonoBehaviour
 
     #endregion
 
-    private bool isGrounded;
-
-    bool repeat;
-
+    private bool isGrounded, repeat = true;
     private Vector3 startingPos;
-
-    // how do i get the player to tell the game con to update the canvas?
-    public void CallCanvas(string words)
-    {
-
-    }
 
     private void Awake()
     {
         groundTrans = this.transform.GetChild(0);
-
-        repeat = true;
         isGrounded = false;
-        startingPos = transform.position;
-        slideChildGOs = groundTrans.childCount;
-        //lengthFlo = groundTrans.GetChild(0).gameObject.GetComponentInChildren<MeshCollider>().bounds.size.y;
+
+        // Count the slides
+        SlideCounter();  
     }
 
     void Start()
     {
-        StartCoroutine(WaitAndMove(1f, slideChildGOs));
-        StartCoroutine(ContinuouslyMove(slideChildGOs));
+        AlignSlide();
+       
     }
 
     void Update()
     {
-        //https://www.unity3dtips.com/unity-fix-movement-stutter/
-        //not this one -- transform.position = Vector3.Lerp(transform.position, Vector3.back * 300, (Time.deltaTime * lerpSpeed)/100f);
-        //transform.position += Vector3.back * (lerpSpeed / 10);
+ 
+    }
+
+    void AlignSlide()
+    {
+        
+
     }
 
     public void ResetWorld()
     {
         //macGO.GetComponent<MacController>().ResetCharacter();
         transform.position = startingPos;
+    }
+
+
+    // Literally just count the slides and get the length of them individually as well as a whole
+    private void SlideCounter()
+    {
+        // This adds the slides gameobjects to the list, gets their size, sets them to zero, then spans them out evenly
+        int count = 0;
+        foreach (Transform child in groundTrans)
+        {
+            
+            slides.Add(groundTrans.GetChild(count).gameObject);
+
+            slides[count].GetComponent<Transform>().position = Vector3.zero;
+
+            if(count != 0)
+                slides[count].GetComponent<Transform>().position = new Vector3(0,0,(slides[count - 1].GetComponentInChildren<Collider>().bounds.size.z) * count);
+
+            Debug.Log("Slide " + count + ": " + slides[count].GetComponentInChildren<Collider>().bounds.size);
+
+            count++;
+        }
+
+        
+
+
+
+        // Now, go to the first child in each slide, and return the bounds of the child
     }
     
     private IEnumerator ContinuouslyMove(int slideCount)
