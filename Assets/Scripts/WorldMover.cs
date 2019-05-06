@@ -12,9 +12,9 @@ public class WorldMover : MonoBehaviour
 
     [SerializeField] private Transform groundTrans;
 
-    [SerializeField] private float lerpSpeed = 5, lengthFlo;
+    [SerializeField] private float lerpSpeed = 5, lengthFlo, totalSlideLength;
 
-    [SerializeField] int slideChildGOs, lengthInt;
+    [SerializeField] int slideChildGOs;
 
     [SerializeField] Vector3 length;
 
@@ -68,19 +68,23 @@ public class WorldMover : MonoBehaviour
 
             slides[count].GetComponent<Transform>().position = Vector3.zero;
 
-            if(count != 0)
-                slides[count].GetComponent<Transform>().position = new Vector3(0,0,(slides[count - 1].GetComponentInChildren<Collider>().bounds.size.z) * count);
+            // We do this so it looks at the last transform and how many come before it and they can align correctly
+            if (count != 0)
+                slides[count].GetComponent<Transform>().position = new Vector3(0, 0, (slides[count - 1].GetComponentInChildren<Collider>().bounds.size.z) * count);
 
-            Debug.Log("Slide " + count + ": " + slides[count].GetComponentInChildren<Collider>().bounds.size);
+            // this is so we know how long everything is, this can be used later to determine when is right to loop the slides based on the speed of mac as well
+            totalSlideLength += slides[count].GetComponentInChildren<Collider>().bounds.size.z;
 
             count++;
+            
         }
 
-        
 
 
-
-        // Now, go to the first child in each slide, and return the bounds of the child
+        Debug.Log(totalSlideLength);
+        slideChildGOs = count;
+        StartCoroutine(ContinuouslyMove(slideChildGOs));
+       
     }
     
     private IEnumerator ContinuouslyMove(int slideCount)
@@ -93,11 +97,16 @@ public class WorldMover : MonoBehaviour
             slideCount++;
             if (slideCount > slideChildGOs - 1)
                 slideCount = 0;
+
+            groundTrans.GetChild(slideCount).transform.position += Vector3.back * lerpSpeed * Time.deltaTime;
+            /*
             t += Time.deltaTime; // Goes from 0 to 1, incrementing by step each time
             groundTrans.GetChild(slideCount).transform.position = Vector3.Lerp(groundTrans.GetChild(slideCount).transform.position, Vector3.back * 800, (Time.deltaTime * lerpSpeed) / 100f); // Move objectToMove closer to b
             //yield return new WaitForFixedUpdate();
             //groundTrans.GetChild(slideCount).transform.position += Vector3.back * 50f * Time.deltaTime;
+              */
             yield return new WaitForSeconds(Time.smoothDeltaTime);
+          
         }
     }
 
