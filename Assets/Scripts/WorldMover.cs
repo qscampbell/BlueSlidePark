@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class WorldMover : MonoBehaviour
 {
+
+    #region Variables
+
     #region Serialized Fields
 
     [SerializeField] private List<GameObject> slides = new List<GameObject>();
@@ -12,7 +15,7 @@ public class WorldMover : MonoBehaviour
 
     [SerializeField] private Transform groundTrans;
 
-    [SerializeField] private float lerpSpeed = 5, lengthFlo, totalSlideLength;
+    [SerializeField] private float lerpSpeed = 25f, lengthFlo, totalSlideLength;
 
     [SerializeField] int slideChildGOs;
 
@@ -22,6 +25,12 @@ public class WorldMover : MonoBehaviour
 
     private bool isGrounded, repeat = true;
     private Vector3 startingPos;
+
+
+    #endregion
+
+
+    #region UnityClasses
 
     private void Awake()
     {
@@ -34,8 +43,8 @@ public class WorldMover : MonoBehaviour
 
     void Start()
     {
-        AlignSlide();
-       
+        SlideCounter();
+        StartCoroutine(ContinuouslyMove(slideChildGOs));
     }
 
     void Update()
@@ -43,100 +52,109 @@ public class WorldMover : MonoBehaviour
  
     }
 
-    void AlignSlide()
-    {
-        
-
-    }
-
-    public void ResetWorld()
-    {
-        //macGO.GetComponent<MacController>().ResetCharacter();
-        transform.position = startingPos;
-    }
+    #endregion
 
 
-    // Literally just count the slides and get the length of them individually as well as a whole
-    private void SlideCounter()
-    {
-        // This adds the slides gameobjects to the list, gets their size, sets them to zero, then spans them out evenly
-        int count = 0;
-        foreach (Transform child in groundTrans)
+    #region CustomClasses&Enums
+
+        #region CustomClasses
+
+        public void ResetWorld()
         {
-            
-            slides.Add(groundTrans.GetChild(count).gameObject);
-
-            slides[count].GetComponent<Transform>().position = Vector3.zero;
-
-            // We do this so it looks at the last transform and how many come before it and they can align correctly
-            if (count != 0)
-                slides[count].GetComponent<Transform>().position = new Vector3(0, 0, (slides[count - 1].GetComponentInChildren<Collider>().bounds.size.z) * count);
-
-            // this is so we know how long everything is, this can be used later to determine when is right to loop the slides based on the speed of mac as well
-            totalSlideLength += slides[count].GetComponentInChildren<Collider>().bounds.size.z;
-
-            count++;
-            
+            //macGO.GetComponent<MacController>().ResetCharacter();
+            transform.position = startingPos;
         }
 
 
-
-        Debug.Log(totalSlideLength);
-        slideChildGOs = count;
-        StartCoroutine(ContinuouslyMove(slideChildGOs));
-       
-    }
-    
-    private IEnumerator ContinuouslyMove(int slideCount)
-    {
-        //float step = (lerpSpeed / (groundTrans.GetChild(slideCount).transform.position - Vector3.back * 300).magnitude) * Time.fixedDeltaTime;
-        float t = 0;
-
-        while (repeat)
+        // Literally just count the slides and get the length of them individually as well as a whole
+        private void SlideCounter()
         {
-            slideCount++;
-            if (slideCount > slideChildGOs - 1)
-                slideCount = 0;
+            // This adds the slides gameobjects to the list, gets their size, sets them to zero, then spans them out evenly
+            int count = 0;
 
-            groundTrans.GetChild(slideCount).transform.position += Vector3.back * lerpSpeed * Time.deltaTime;
-            /*
-            t += Time.deltaTime; // Goes from 0 to 1, incrementing by step each time
-            groundTrans.GetChild(slideCount).transform.position = Vector3.Lerp(groundTrans.GetChild(slideCount).transform.position, Vector3.back * 800, (Time.deltaTime * lerpSpeed) / 100f); // Move objectToMove closer to b
-            //yield return new WaitForFixedUpdate();
-            //groundTrans.GetChild(slideCount).transform.position += Vector3.back * 50f * Time.deltaTime;
-              */
-            yield return new WaitForSeconds(Time.smoothDeltaTime);
-          
-        }
-    }
-
-
-    // loop through background
-    private IEnumerator WaitAndMove(float time, int slideCount)
-    {
-        //Debug.Log("SlideCount before: " + slideCount);
-
-        while (repeat)
-        {
-            slideCount++;
-            // Subtracting 1 because we start counting from 0 but we count the GO starting at 1 
-            if (slideCount > slideChildGOs - 1)
+            foreach (Transform child in groundTrans)
             {
-                slideCount = 0;
-            }
-        
-            groundTrans.GetChild(slideCount).transform.position += new Vector3(0, 0, 230f);
 
-            Debug.Log("SlideCount after: " + slideCount);
-            yield return new WaitForSeconds(2f);
+                slides.Add(groundTrans.GetChild(count).gameObject);
+
+                slides[count].GetComponent<Transform>().position = Vector3.zero;
+
+                // We do this so it looks at the last transform and how many come before it and they can align correctly
+                if (count != 0)
+                    slides[count].GetComponent<Transform>().position = new Vector3(0, 0, (slides[count - 1].GetComponentInChildren<Collider>().bounds.size.z) * count);
+
+                // this is so we know how long everything is, this can be used later to determine when is right to loop the slides based on the speed of mac as well
+                totalSlideLength += slides[count].GetComponentInChildren<Collider>().bounds.size.z;
+
+                count++;
+            }
+
+            slideChildGOs = count;
+
         }
 
-        groundTrans.GetChild(slideCount);
+    #endregion
 
-        Debug.Log("SlideParts 0: " + slides[0].gameObject.name);
-        Debug.Log("SlidePart Capacity: " + (slides.Capacity));
-        Debug.Log("First Child: " + groundTrans.GetChild(0).name);
 
-        yield return new WaitForSeconds(time);
-    }
+        #region CustomEnums
+        private IEnumerator ContinuouslyMove(int slideCount)
+        {
+            //float step = (lerpSpeed / (groundTrans.GetChild(slideCount).transform.position - Vector3.back * 300).magnitude) * Time.fixedDeltaTime;
+            float t = 0;
+
+            while (repeat)
+            {
+                slideCount++;
+                if (slideCount > slideChildGOs - 1)
+                    slideCount = 0;
+
+                groundTrans.GetChild(slideCount).transform.position += Vector3.back * lerpSpeed * Time.deltaTime;
+                /*
+                t += Time.deltaTime; // Goes from 0 to 1, incrementing by step each time
+                groundTrans.GetChild(slideCount).transform.position = Vector3.Lerp(groundTrans.GetChild(slideCount).transform.position, Vector3.back * 800, (Time.deltaTime * lerpSpeed) / 100f); // Move objectToMove closer to b
+                yield return new WaitForFixedUpdate();
+                groundTrans.GetChild(slideCount).transform.position += Vector3.back * 50f * Time.deltaTime;
+                  */
+                yield return new WaitForSeconds(Time.smoothDeltaTime);
+
+            }
+        }
+
+
+        // loop through background
+        private IEnumerator WaitAndMove(float time, int slideCount)
+        {
+            //Debug.Log("SlideCount before: " + slideCount);
+
+            while (repeat)
+            {
+                slideCount++;
+                // Subtracting 1 because we start counting from 0 but we count the GO starting at 1 
+                if (slideCount > slideChildGOs - 1)
+                {
+                    slideCount = 0;
+                }
+
+                groundTrans.GetChild(slideCount).transform.position += new Vector3(0, 0, 230f);
+
+                Debug.Log("SlideCount after: " + slideCount);
+                yield return new WaitForSeconds(2f);
+            }
+
+            groundTrans.GetChild(slideCount);
+
+            Debug.Log("SlideParts 0: " + slides[0].gameObject.name);
+            Debug.Log("SlidePart Capacity: " + (slides.Capacity));
+            Debug.Log("First Child: " + groundTrans.GetChild(0).name);
+
+            yield return new WaitForSeconds(time);
+        }
+
+    #endregion
+
+
+    #endregion
+
+
+
 }
