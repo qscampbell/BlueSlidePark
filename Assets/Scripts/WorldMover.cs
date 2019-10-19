@@ -5,7 +5,7 @@ using UnityEngine;
 public class WorldMover : MonoBehaviour
 {
 
-    #region Variables
+#region Variables
 
     #region Serialized Fields
 
@@ -27,7 +27,7 @@ public class WorldMover : MonoBehaviour
     private Vector3 startingPos;
 
 
-    #endregion
+#endregion
 
 
  #region UnityClasses
@@ -69,8 +69,6 @@ public class WorldMover : MonoBehaviour
  * 
  */
 
-
-
     public void ResetWorld()
     {
         //macGO.GetComponent<MacController>().ResetCharacter();
@@ -109,7 +107,7 @@ public class WorldMover : MonoBehaviour
 
 
 
-    #region CustomEnums
+#region CustomEnums
     private IEnumerator ContinuouslyMove(int slideCount)
     {
         while (repeat)
@@ -159,8 +157,6 @@ public class WorldMover : MonoBehaviour
         yield return new WaitForSeconds(time);
     }
 
-    #endregion
-
-
+#endregion
 
 }
