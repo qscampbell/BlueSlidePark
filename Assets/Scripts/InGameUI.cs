@@ -21,6 +21,6 @@ public class InGameUI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 }

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+//For moving Mac going down the slide etc
+
 public class MacController : MonoBehaviour
 {
     [SerializeField] private float speed = 3;
@@ -43,10 +45,12 @@ public class MacController : MonoBehaviour
     {
         if(collision.gameObject.tag == "Floor")
         {
+            Debug.Log("Here in floor!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
             isGrounded = true;
         }
     }
 
+    //for when user falls off the side of the slide
     private void OnTriggerExit(Collider collider)
     {
         if (collider.gameObject.tag == "Killbox")
@@ -55,19 +59,11 @@ public class MacController : MonoBehaviour
         }
     }
 
+    //hits ice cream or poop
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "Enemy")
-        {
-            ResetCharacter();
-        }
-
-        if (other.gameObject.tag == "Pickup")
-        {
-            other.gameObject.SetActive(false);
-            canvasCon.GetComponent<InGameUI>().CallAnimator("ThumbUp");
-
-        }
+        Debug.Log("Here in reset!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        ResetCharacter();
     }
 
     // Update is called once per frame
@@ -75,9 +71,9 @@ public class MacController : MonoBehaviour
     {
         if (isGrounded)
         {
-            if (Input.GetKey(KeyCode.D))
+            if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))
                 rb.AddForce(Vector3.right * speed, ForceMode.Impulse);
-            if (Input.GetKey(KeyCode.A))
+            if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))
                 rb.AddForce(Vector3.left * speed, ForceMode.Impulse);
         }
     }

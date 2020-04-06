@@ -27,6 +27,7 @@ public class WorldMover : MonoBehaviour
     private Vector3 startingPos;
 
 
+
 #endregion
 
 
@@ -41,7 +42,6 @@ public class WorldMover : MonoBehaviour
     {
       ;
         isGrounded = false;
-
         // Count the slides
         SlideCounter();  
     }
