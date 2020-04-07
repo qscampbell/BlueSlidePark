@@ -33,7 +33,7 @@ public class UIController : MonoBehaviour
 
     [SerializeField] private GameObject box;
     [SerializeField] private GameObject spaceTxt;
-    private bool flag = true;
+    private bool flag = true, enterPressed = false;
     public void Update()
     {
         if (flag)
@@ -47,8 +47,9 @@ public class UIController : MonoBehaviour
         {
             box.SetActive(false); //hide the box
             spaceTxt.SetActive(true); //show the text
+            enterPressed = true;
         }
-        else if(Input.GetKey(KeyCode.Space))
+        else if(Input.GetKey(KeyCode.Space) && enterPressed)
         {
             spaceTxt.SetActive(true);
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
