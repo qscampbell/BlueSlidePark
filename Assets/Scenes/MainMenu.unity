@@ -248,7 +248,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -14, y: 21.074}
+  m_AnchoredPosition: {x: -14, y: 21.073975}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 1, y: 0}
 --- !u!114 &282821316
@@ -659,6 +659,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1932520291}
+  - {fileID: 710920319}
   m_Father: {fileID: 1371706150}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -787,13 +788,13 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 1932520291}
-  m_RootOrder: 0
+  m_Father: {fileID: 540543827}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 9.299988, y: -9.599998}
-  m_SizeDelta: {x: 0.1, y: 0.7}
+  m_AnchoredPosition: {x: 9.232178, y: -9.13723}
+  m_SizeDelta: {x: -19.638342, y: -21.938137}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &710920320
 MonoBehaviour:
@@ -877,7 +878,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 710920320}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &741629632
 GameObject:
   m_ObjectHideFlags: 0
@@ -1195,6 +1207,7 @@ MonoBehaviour:
   txtBox: {fileID: 0}
   box: {fileID: 0}
   spaceTxt: {fileID: 0}
+  inputText: {fileID: 0}
 --- !u!114 &1224188832
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1513,8 +1526,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 710920319}
+  m_Children: []
   m_Father: {fileID: 540543827}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

@@ -1,12 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 /// <summary>
 /// TODO:
 ///     - Pull menu controller from Spose game
+///     - Use GUI.Box to create a box for inputting the user's name on MainMenu
 /// </summary>
 
 public class UIController : MonoBehaviour
@@ -33,6 +32,7 @@ public class UIController : MonoBehaviour
 
     [SerializeField] private GameObject box;
     [SerializeField] private GameObject spaceTxt;
+    [SerializeField] private GameObject inputText;
     private bool flag = true, enterPressed = false;
     public void Update()
     {
@@ -40,16 +40,21 @@ public class UIController : MonoBehaviour
         {
             box = GameObject.Find("MainBox");
             spaceTxt = GameObject.Find("pressSpaceTxt");
+            inputText = GameObject.Find("nameText");
             flag = false;
             spaceTxt.SetActive(false);
         }
-        if (Input.GetKey(KeyCode.Return))
+        if (Input.GetKey(KeyCode.Return))//user has pressed enter
         {
+            //testing
+            //inputText.GetComponent<Text>().text = "Hello World";
+            
             box.SetActive(false); //hide the box
             spaceTxt.SetActive(true); //show the text
             enterPressed = true;
+
         }
-        else if(Input.GetKey(KeyCode.Space) && enterPressed)
+        else if (Input.GetKey(KeyCode.Space) && enterPressed)
         {
             spaceTxt.SetActive(true);
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
@@ -59,7 +64,7 @@ public class UIController : MonoBehaviour
 
     public void DisplayNewUI(string option)
     {
-        switch(option)
+        switch (option)
         {
             case "music player":
                 // Should this be it's own scene?
@@ -73,11 +78,10 @@ public class UIController : MonoBehaviour
             case "quit":
                 print("are you sure?...");
                 break;
-         
+
         }
-
-
-          
     }
+
+    //testing
 
 }
